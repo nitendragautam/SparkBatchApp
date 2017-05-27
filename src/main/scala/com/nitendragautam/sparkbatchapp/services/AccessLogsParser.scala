@@ -34,14 +34,14 @@ class AccessLogsParser extends Serializable{
   Input is logRecord  in the combined log format
   output obtained is the Access Record instance wrapped in Option
 */
-  def parseAccessLogs(logRecord :String): Option[AccessLogRecord] ={
+  def parseAccessLogs(logRecord :String): AccessLogRecord ={
 
     val regexMatcher=pattern.matcher(logRecord)
     if(regexMatcher.find){ //If Pattern in matched
-      Some(buildAccessLogRecord(regexMatcher))
+     buildAccessLogRecord(regexMatcher)
 
     }else{
-      None //No Pattern is Matched
+      AccessLogRecord("","","","","","","","","") //No Pattern is Matched
     }
   }
 

@@ -8,7 +8,7 @@ scalaVersion := "2.11.8"
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
 mainClass in assembly := Some("com.nitendragautam.sparkbatchapp.main.Boot")
-assemblyJarName in assembly := "sparksbatchapp.jar"
+assemblyJarName in assembly := "sparkbatchapp.jar"
 libraryDependencies ++= {
 val sparkV     =  "2.0.1"
 
