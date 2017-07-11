@@ -17,8 +17,9 @@ val accessLogsParser = new AccessLogsParser
   val tapiStart =System.currentTimeMillis()
 
 logger.info("Spark Batch Job Start Time: " +tapiStart)
-  def startSparkStreamingCluster(inputFile :String ,outPutFile :String) {
+  def startSparkStreamingCluster(inputFile :String ,outputFile :String) {
     val conf = new SparkConf().setAppName("SparkStreamingApp")
+
 
     val sc = new SparkContext(conf)
 
@@ -32,12 +33,13 @@ logger.info("Spark Batch Job Start Time: " +tapiStart)
     //Calculate the Client IP address which came more than 10 times
     val ipAddress = accessLogsRDD.map(_.clientAddress -> 1L)
                     .reduceByKey(_ + _) //add the number of Occurens
+                    .cache()
                    // .filter(_._2 >5 ) //Client Ip address >10 times
                      //.map(_._1) //Map the Client IP address count to
                      //.take(100)
 
-//Save the Results as Text File
-ipAddress.saveAsTextFile(outPutFile+ getTodaysDate())
+//Save the Results as singleText File
+    ipAddress.coalesce(1).saveAsTextFile(outputFile + getTodaysDate())
 
 
 
@@ -45,8 +47,8 @@ sc.stop() //Stopping Spark batch
     val tapiEnd =System.currentTimeMillis()
 
     logger.info("Spark Batch Job End Time: " +tapiEnd)
-    val elaspedTimeApi = tapiEnd -tapiStart
-    logger.info(" Spark Batch Job elapsedTime: "+elaspedTimeApi)
+    val elaspedTimeApi = (tapiEnd -tapiStart)/1000
+    logger.info(" Spark Batch Job elapsedTime in Seconds: "+elaspedTimeApi)
   }
 private def getTodaysDate(): String ={
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
