@@ -17,6 +17,7 @@ val accessLogsParser = new AccessLogsParser
   val tapiStart =System.currentTimeMillis()
 
 logger.info("Spark Batch Job Start Time: " +tapiStart)
+  logger.info("Spark Batch Job Start Time: " +getTodaysDate())
   def startSparkStreamingCluster(inputFile :String ,outputFile :String) {
     val conf = new SparkConf().setAppName("SparkStreamingApp")
 
@@ -49,6 +50,7 @@ sc.stop() //Stopping Spark batch
     logger.info("Spark Batch Job End Time: " +tapiEnd)
     val elaspedTimeApi = (tapiEnd -tapiStart)/1000
     logger.info(" Spark Batch Job elapsedTime in Seconds: "+elaspedTimeApi)
+    println("Spark Batch Job End Time: " + getTodaysDate)
   }
 private def getTodaysDate(): String ={
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
