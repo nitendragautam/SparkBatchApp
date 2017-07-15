@@ -14,10 +14,7 @@ class SparkServices extends Serializable{
 val accessLogsParser = new AccessLogsParser
   private val logger: Logger =
     LoggerFactory.getLogger(classOf[SparkServices])
-  val tapiStart =System.currentTimeMillis()
 
-logger.info("Spark Batch Job Start Time: " +tapiStart)
-  logger.info("Spark Batch Job Start Time: " +getTodaysDate())
   def startSparkStreamingCluster(inputFile :String ,outputFile :String) {
     val conf = new SparkConf().setAppName("SparkStreamingApp")
 
@@ -45,12 +42,7 @@ logger.info("Spark Batch Job Start Time: " +tapiStart)
 
 
 sc.stop() //Stopping Spark batch
-    val tapiEnd =System.currentTimeMillis()
 
-    logger.info("Spark Batch Job End Time: " +tapiEnd)
-    val elaspedTimeApi = (tapiEnd -tapiStart)/1000
-    logger.info(" Spark Batch Job elapsedTime in Seconds: "+elaspedTimeApi)
-    println("Spark Batch Job End Time: " + getTodaysDate)
   }
 private def getTodaysDate(): String ={
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
