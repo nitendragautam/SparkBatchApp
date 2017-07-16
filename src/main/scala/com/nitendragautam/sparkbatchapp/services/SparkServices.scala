@@ -11,12 +11,15 @@ import org.slf4j.{Logger, LoggerFactory}
   * Spark Services
   */
 class SparkServices extends Serializable{
-val accessLogsParser = new AccessLogsParser
+  val accessLogsParser = new AccessLogsParser
   private val logger: Logger =
     LoggerFactory.getLogger(classOf[SparkServices])
+  val tapiStart =System.currentTimeMillis()
 
+  logger.info("Spark Batch Job Start Time: " +tapiStart)
+  logger.info("Spark Batch Job Start Time: " +getTodaysDate())
   def startSparkStreamingCluster(inputFile :String ,outputFile :String) {
-    val conf = new SparkConf().setAppName("SparkStreamingApp")
+    val conf = new SparkConf().setAppName("SparkBatchApp")
 
 
     val sc = new SparkContext(conf)
@@ -30,26 +33,30 @@ val accessLogsParser = new AccessLogsParser
 
     //Calculate the Client IP address which came more than 10 times
     val ipAddress = accessLogsRDD.map(_.clientAddress -> 1L)
-                    .reduceByKey(_ + _) //add the number of Occurens
-                    .cache()
-                   // .filter(_._2 >5 ) //Client Ip address >10 times
-                     //.map(_._1) //Map the Client IP address count to
-                     //.take(100)
+      .reduceByKey(_ + _) //add the number of Occurens
+      .cache()
+    // .filter(_._2 >5 ) //Client Ip address >10 times
+    //.map(_._1) //Map the Client IP address count to
+    //.take(100)
 
-//Save the Results as singleText File
-    ipAddress.coalesce(1).saveAsTextFile(outputFile + getTodaysDate())
+    //Save the Results as singleText File
+    ipAddress.coalesce(1).saveAsTextFile(outputFile)
 
 
 
-sc.stop() //Stopping Spark batch
+    sc.stop() //Stopping Spark batch
+    val tapiEnd =System.currentTimeMillis()
 
+    logger.info("Spark Batch Job End Time: " +tapiEnd)
+    val elaspedTimeApi = (tapiEnd -tapiStart)/1000
+    logger.info(" Spark Batch Job elapsedTime in Seconds: "+elaspedTimeApi)
+    println("Spark Batch Job End Time: " + getTodaysDate)
   }
-private def getTodaysDate(): String ={
-  val dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
-  val cal = Calendar.getInstance()
-  cal.add(Calendar.DATE,0)
-  dateFormat.format(cal.getTime())
+  private def getTodaysDate(): String ={
+    val dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
+    val cal = Calendar.getInstance()
+    cal.add(Calendar.DATE,0)
+    dateFormat.format(cal.getTime())
+  }
 }
-}
-
 
