@@ -19,7 +19,7 @@ class SparkServices extends Serializable{
   logger.info("Spark Batch Job Start Time: " +tapiStart)
   logger.info("Spark Batch Job Start Time: " +getTodaysDate())
   def startSparkStreamingCluster(inputFile :String ,outputFile :String) {
-    val conf = new SparkConf().setAppName("SparkBatchApp")
+    val conf = new SparkConf().setAppName("SparkBatchApp" +getTodaysDate())
 
 
     val sc = new SparkContext(conf)
@@ -48,6 +48,7 @@ class SparkServices extends Serializable{
     val tapiEnd =System.currentTimeMillis()
 
     logger.info("Spark Batch Job End Time: " +tapiEnd)
+    logger.info("Spark Batch Job End Time: " +getTodaysDate())
     val elaspedTimeApi = (tapiEnd -tapiStart)/1000
     logger.info(" Spark Batch Job elapsedTime in Seconds: "+elaspedTimeApi)
     println("Spark Batch Job End Time: " + getTodaysDate)
