@@ -12,7 +12,7 @@ object Boot {
 
 
 val sr = new SparkServices
-sr.startSparkStreamingCluster(inputFile ,outputFile)
+sr.startSparkBatchCluster(inputFile ,outputFile)
 
   }
 }
