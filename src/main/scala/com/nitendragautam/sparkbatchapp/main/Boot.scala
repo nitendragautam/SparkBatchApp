@@ -3,7 +3,7 @@ package com.nitendragautam.sparkbatchapp.main
 import com.nitendragautam.sparkbatchapp.services.SparkServices
 
 /**
-*Main Entry
+*Main Entry point to the Application 
  */
 object Boot {
   def main(args: Array[String]) {
