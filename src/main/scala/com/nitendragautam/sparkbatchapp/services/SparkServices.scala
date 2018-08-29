@@ -18,7 +18,7 @@ class SparkServices extends Serializable{
 
   logger.info("Spark Batch Job Start Time: " +tapiStart)
   logger.info("Spark Batch Job Start Time: " +getTodaysDate())
-  def startSparkStreamingCluster(inputFile :String ,outputFile :String) {
+  def startSparkBatchCluster(inputFile :String, outputFile :String) {
     val conf = new SparkConf().setAppName("SparkBatchApp" +getTodaysDate())
 
 
@@ -35,10 +35,6 @@ class SparkServices extends Serializable{
     val ipAddress = accessLogsRDD.map(_.clientAddress -> 1L)
       .reduceByKey(_ + _) //add the number of Occurens
       .cache()
-    // .filter(_._2 >5 ) //Client Ip address >10 times
-    //.map(_._1) //Map the Client IP address count to
-    //.take(100)
-
     //Save the Results as singleText File
     ipAddress.coalesce(1).saveAsTextFile(outputFile)
 
